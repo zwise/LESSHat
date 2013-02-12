@@ -1,0 +1,37 @@
+.transition(@arguments:all) {
+
+    //  Local config for disabling properties
+
+    @w3cLocal: true; // Unprefixed W3C syntax
+    @webkitLocal: true; // Chrome 7+, Safari 5+, iOS5, Android
+    @mozLocal: true; //  Firefox 4+
+    @operaLocal: true; // Opera 10.5+
+    @msLocal: true;  // IE 10+
+
+    @transitionWebkit: ~`./transitionWebkit.js`;
+    @transitionMoz: ~`./transitionMoz.js`;
+    @transitionOpera: ~`./transitionOpera.js`;
+    @transitionMs: ~`./transitionMs.js`;
+    @transitionW3C: ~`./transitionW3C.js`;
+
+    .result (@arguments, @signal, @boolean, @localBoolean) when (@boolean = true) and (@localBoolean = true) {
+        .inception (@signal, @arguments) when (@signal = 1) { -webkit-transition: @transitionWebkit; }
+        .inception (@signal, @arguments) when (@signal = 2) { -moz-transition: @transitionMoz; }
+        .inception (@signal, @arguments) when (@signal = 3) { -o-transition: @transitionOpera; }
+        .inception (@signal, @arguments) when (@signal = 4) { -ms-transition: @transitionMs; }
+        .inception (@signal, @arguments) when (@signal = 5) { transition: @transitionW3C; }
+        .inception (@signal, @arguments) when (@signal > 5),(@signal < 1) { error: "Signal is out of range"; }
+        .inception(@signal, @arguments);
+    }
+    .result (@arguments, @signal, @boolean, @localBoolean) when not (@boolean = true), not (@localBoolean = true) { }
+
+    .result(@arguments, @webkitSignal, @webkit, @webkitLocal);
+    // --  this comment must be here because of LESS bug
+    .result(@arguments, @mozSignal, @moz, @mozLocal);
+    // --
+    .result(@arguments, @operaSignal, @opera, @operaLocal);
+    // --
+    .result(@arguments, @msSignal, @ms, @msLocal);
+    // --
+    .result(@arguments, @w3cSignal, @w3c, @w3cLocal);
+}
