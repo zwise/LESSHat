@@ -1,5 +1,11 @@
 =LESS HAT
 
+==Status
+
+In this branch we are focused on the build system for easier maintenance of the mixins and better community support.
+This is work in progress.
+
+
 ==Features
 
 All CSS3 properties which need to be prefixed
